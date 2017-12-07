@@ -1,0 +1,25 @@
+import edu.stanford.nlp.ling.CoreAnnotation;
+import edu.stanford.nlp.util.ArrayCoreMap;
+import edu.stanford.nlp.util.TypesafeMap.Key;
+
+import java.util.Properties;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+
+// Java 1.8 and stanfor-corenlp-3.8.0
+// javac -cp '.:stanford-corenlp-3.8.0.jar' AnnotationBridge.java
+// jar cf bridge.jar AnnotationBridge.class
+public class AnnotationBridge {
+    
+    public static Object getAnnotation(Object entity, String name) throws ClassNotFoundException {
+    	 //replace Key<CoreAnnotation>> klass with Class<? extends Key<CoreAnnotation>> klass
+    	  Class<? extends Key<CoreAnnotation>> klass;
+    	  klass = (Class<? extends Key<CoreAnnotation>>) Class.forName(name);
+        Object object = ((ArrayCoreMap) entity).get(klass);
+        return object;
+    }
+    
+    public static Object getPipelineWithProperties(Properties properties) {
+      StanfordCoreNLP pipeline = new StanfordCoreNLP(properties);
+      return pipeline;
+    }
+}
